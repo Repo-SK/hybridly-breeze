@@ -1,6 +1,6 @@
 {
   "private": true,
-  "author": "Shaurya <shauryakumar002@gmail.com>",
+  "author": "SK <sk@2suns.net>",
   "license": "MIT",
   "preset": "preset.ts",
   "devDependencies": {

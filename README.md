@@ -7,12 +7,12 @@
 </p>
 
 <h2 align="center">hybridly-breeze</h2>
-<pre><div align="center">npx @preset/cli apply username//Users/shauryakumar/Documents/Projects/node/hybridly-breeze</div></pre>
+<pre><div align="center">npx @preset/cli apply https://github.com/repo-sk/hybridly-breeze.git</div></pre>
 
 <br />
 
 <div align="center">
-  This preset was made by Shaurya.
+  This preset was made by SK.
   <br />
   <br />
   <a href="https://preset.dev">Learn more</a>
