@@ -4,7 +4,7 @@ export default definePreset({
     // ...
   },
   handler: async () => {
+    await applyNestedPreset({ preset: "hybridly/preset" });
     await extractTemplates();
-    // ...
   },
 });
