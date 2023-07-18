@@ -4,6 +4,8 @@ export default definePreset({
     handler: async () => {
         await applyNestedPreset({ preset: 'hybridly/preset' });
 
+        await installNpmDependencies();
+
         await extractTemplates({
             title: 'extract templates',
             from: 'base',
@@ -32,6 +34,22 @@ export default definePreset({
         await setupFortify();
     },
 });
+
+const installNpmDependencies = async () => {
+    await installPackages({
+        title: 'add npm dependencies',
+        for: 'node',
+        dev: false,
+        packages: ['@heroicons/vue', '@vueuse/core'],
+    });
+
+    await installPackages({
+        title: 'add npm dev dependencies',
+        for: 'node',
+        dev: true,
+        packages: ['prettier prettier-plugin-tailwindcss'],
+    });
+};
 
 const setupFortify = async () => {
     await installPackages({
