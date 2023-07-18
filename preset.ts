@@ -1,11 +1,13 @@
 export default definePreset({
     name: 'hybridly-breeze',
-    options: {
-        // ...
-    },
+    options: {},
     handler: async () => {
         await applyNestedPreset({ preset: 'hybridly/preset' });
-        await extractTemplates();
+
+        await extractTemplates({
+            title: 'extract templates',
+            from: 'base',
+        });
 
         await editFiles({
             title: 'change db driver to sqlite',
@@ -107,8 +109,14 @@ const setupFortify = async () => {
         files: 'app/Http/Middleware/HandleHybridRequests.php',
         operations: [
             {
+                type: 'remove-line',
+                match: /public function share\(\): SharedData/,
+                count: 7,
+                start: 1,
+            },
+            {
                 type: 'add-line',
-                match: /public function share\(): SharedData/,
+                match: /public function share\(\): SharedData/,
                 position: 'after',
                 lines: [
                     '{',
