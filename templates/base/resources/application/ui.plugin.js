@@ -186,6 +186,10 @@ module.exports = plugin(
                 '@apply text-theme-accent bg-transparent hover:bg-theme-secondary active:bg-theme-secondary-hover':
                     {},
             },
+            '.button-link': {
+                '@apply underline text-sm text-theme-light hover:text-theme-base':
+                    {},
+            },
             '.input': {
                 '@apply relative medium px-[15px] rounded-[2px] border border-transparent w-max':
                     {},
