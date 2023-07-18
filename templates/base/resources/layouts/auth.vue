@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core';
-import Logo from '~/components/icons/logo.vue';
+import Logo from '@/components/icons/logo.vue';
 import { SunIcon, MoonIcon, ArrowLeftIcon } from '@heroicons/vue/24/outline';
 import { RouterLink } from '@hybridly/vue';
 

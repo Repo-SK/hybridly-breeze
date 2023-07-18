@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TextField from '~/components/text-field.vue';
+import TextField from '@/components/text-field.vue';
 
 const form = useForm({
     method: 'POST',

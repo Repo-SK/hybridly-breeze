@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TextField from '~/components/text-field.vue';
+import TextField from '@/components/text-field.vue';
 import { RouterLink } from '@hybridly/vue';
 
 const form = useForm({

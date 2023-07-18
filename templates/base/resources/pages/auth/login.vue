@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import unquote from '~/utilities/unquote';
-import TextField from '~/components/text-field.vue';
+import unquote from '@/utilities/unquote';
+import TextField from '@/components/text-field.vue';
 import { RouterLink } from '@hybridly/vue';
 
 const form = useForm({
