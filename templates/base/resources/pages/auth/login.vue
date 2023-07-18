@@ -68,7 +68,7 @@ const form = useForm({
 
             <button
                 type="submit"
-                class="button w-full py-2 md:w-max"
+                class="button-primary w-full md:w-max"
                 :class="{ loading: form.processing }"
                 :disabled="form.processing"
             >

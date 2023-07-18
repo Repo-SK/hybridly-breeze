@@ -18,7 +18,7 @@ const status = useProperty('status');
 
         <button
             type="submit"
-            class="button w-full"
+            class="button-primary w-full"
             :class="{ 'loading-absolute': form.processing }"
             :disabled="form.processing"
         >
