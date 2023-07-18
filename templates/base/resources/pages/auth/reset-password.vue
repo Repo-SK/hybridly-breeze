@@ -2,12 +2,26 @@
 import unquote from '~/utilities/unquote';
 import TextField from '~/components/text-field.vue';
 
+const $props = defineProps<{
+    token?: string;
+    email?: string;
+}>();
+
 const form = useForm({
     method: 'POST',
-    url: route('password.email'),
+    url: route('password.update'),
     fields: {
-        email: '',
+        email: $props.email,
+        password: '',
+        password_confirmation: '',
+        token: $props.token,
     },
+});
+
+onMounted(() => {
+    if (!$props.token) {
+        router.get(route('login'));
+    }
 });
 </script>
 
@@ -20,6 +34,26 @@ const form = useForm({
             id="email"
             label="Email"
             type="email"
+            required
+        />
+
+        <!-- Password -->
+        <TextField
+            v-model="form.fields.password"
+            :error="form.errors.password"
+            id="password"
+            label="Password"
+            type="password"
+            required
+        />
+
+        <!-- Confirm Password -->
+        <TextField
+            v-model="form.fields.password_confirmation"
+            :error="form.errors.password_confirmation"
+            id="password_confirmation"
+            label="Confirm password"
+            type="password"
             required
         />
 
