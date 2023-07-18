@@ -47,7 +47,7 @@ const installNpmDependencies = async () => {
         title: 'add npm dev dependencies',
         for: 'node',
         dev: true,
-        packages: ['prettier prettier-plugin-tailwindcss'],
+        packages: ['prettier-plugin-tailwindcss'],
     });
 };
 
