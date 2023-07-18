@@ -13,17 +13,17 @@ const $props = defineProps<
 </script>
 
 <template>
-    <div class="flex flex-col space-y">
+    <div class="space-y flex flex-col">
         <label
             v-if="$props.label"
             :for="$props.id"
-            class="text-sm text-theme-muted"
+            class="text-theme-muted text-sm"
             >{{ $props.label }}</label
         >
         <label
             v-if="$props.description"
             :for="$props.id"
-            class="text-sm text-theme-muted"
+            class="text-theme-muted text-sm"
             >{{ $props.description }}</label
         >
         <input
@@ -43,8 +43,8 @@ const $props = defineProps<
         />
         <span
             v-if="$props.error"
-            v-text="$props.errors"
-            class="text-sm text-theme-danger"
+            v-text="$props.error"
+            class="text-theme-danger text-sm"
         />
     </div>
 </template>
