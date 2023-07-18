@@ -33,7 +33,7 @@ const $props = defineProps<
                     ($event?.target as HTMLTextAreaElement)?.value
                 )
             "
-            class="input"
+            class="input w-full"
             :name="$props.name"
             :id="$props.id"
             :type="$props.type || 'text'"
