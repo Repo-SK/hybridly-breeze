@@ -67,15 +67,15 @@ const setupFortify = async () => {
             match: /Fortify::createUsersUsing\(CreateNewUser::class\);/,
             position: 'before',
             lines: [
-                'Fortify::loginView(fn () => hybridly("auth.login"));',
-                'Fortify::registerView(fn () => hybridly("auth.register"));',
-                'Fortify::verifyEmailView(fn () => hybridly("auth.verify-email"));',
-                'Fortify::confirmPasswordView(fn () => hybridly("auth.confirm-password"));',
-                'Fortify::twoFactorChallengeView(fn () => hybridly("auth.two-factor-challenge"));',
-                'Fortify::requestPasswordResetLinkView(fn () => hybridly("auth.forgot-password"));',
-                'Fortify::resetPasswordView(fn () => hybridly("reset-password", [',
-                '    "email" => request()->query("email"),',
-                '    "token" => request()->route("token")',
+                "Fortify::loginView(fn () => hybridly('auth.login'));",
+                "Fortify::registerView(fn () => hybridly('auth.register'));",
+                "Fortify::verifyEmailView(fn () => hybridly('auth.verify-email'));",
+                "Fortify::confirmPasswordView(fn () => hybridly('auth.confirm-password'));",
+                "Fortify::twoFactorChallengeView(fn () => hybridly('auth.two-factor-challenge'));",
+                "Fortify::requestPasswordResetLinkView(fn () => hybridly('auth.forgot-password'));",
+                "Fortify::resetPasswordView(fn () => hybridly('reset-password', [",
+                "    'email' => request()->query('email'),",
+                "    'token' => request()->route('token')",
                 ']));',
             ],
         },
@@ -98,6 +98,28 @@ const setupFortify = async () => {
                         'use HasApiTokens, HasFactory, Notifiable;',
                         'use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable;'
                     ),
+            },
+        ],
+    });
+
+    await editFiles({
+        title: 'setup hybridly shared properties',
+        files: 'app/Http/Middleware/HandleHybridRequests.php',
+        operations: [
+            {
+                type: 'add-line',
+                match: /public function share\(): SharedData/,
+                position: 'after',
+                lines: [
+                    '{',
+                    '    return SharedData::from([',
+                    "        'security' => SecurityData::from([",
+                    "            'user' => UserData::optional(auth()->user()),",
+                    '        ]),',
+                    "        'status' => session('status') // used by fortify",
+                    '    ]);',
+                    '}',
+                ],
             },
         ],
     });
