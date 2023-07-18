@@ -8,7 +8,7 @@ const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
 const context = useContext();
-const component = computed(() => context.value?.view.name || '');
+const component = computed(() => context.value?.view.component || '');
 </script>
 
 <template>
