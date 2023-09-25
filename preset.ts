@@ -2,7 +2,7 @@ export default definePreset({
     name: 'hybridly-breeze',
     options: {},
     handler: async () => {
-        await applyNestedPreset({ preset: 'hybridly/preset' });
+        await applyNestedPreset({ preset: 'hybridly/preset', args: ['--no-pest'] });
 
         await installNpmDependencies();
 
