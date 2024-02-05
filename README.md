@@ -12,7 +12,7 @@
 <br />
 
 <div align="center">
-  This preset was made by SK.
+  Made with :heart:
   <br />
   <br />
   <a href="https://preset.dev">Learn more</a>
