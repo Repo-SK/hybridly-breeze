@@ -2,7 +2,7 @@ export default definePreset({
     name: 'hybridly-breeze',
     options: {},
     handler: async () => {
-        await applyNestedPreset({ preset: 'hybridly/preset' });
+        await applyNestedPreset({ preset: 'hybridly/preset', args: ['--no-pest'] });
 
         await installNpmDependencies();
 
@@ -11,25 +11,7 @@ export default definePreset({
             from: 'base',
         });
 
-        await editFiles({
-            title: 'change db driver to sqlite',
-            files: '.env',
-            operations: [
-                {
-                    type: 'update-content',
-                    update: (content) =>
-                        content.replace(
-                            'DB_CONNECTION=mysql',
-                            'DB_CONNECTION=sqlite'
-                        ),
-                },
-                {
-                    type: 'remove-line',
-                    match: /DB_HOST/,
-                    count: 5,
-                },
-            ],
-        });
+        await installComposerDependencies();
 
         await setupFortify();
     },
@@ -40,7 +22,7 @@ const installNpmDependencies = async () => {
         title: 'add npm dependencies',
         for: 'node',
         dev: false,
-        packages: ['@heroicons/vue', '@vueuse/core'],
+        packages: ['@heroicons/vue', '@vueuse/core', 'axios'],
     });
 
     await installPackages({
@@ -48,6 +30,14 @@ const installNpmDependencies = async () => {
         for: 'node',
         dev: true,
         packages: ['prettier-plugin-tailwindcss', 'color'],
+    });
+};
+
+const installComposerDependencies = async () => {
+    await installPackages({
+        title: 'install composer dependencies',
+        for: 'php',
+        packages: ['jenssegers/agent'],
     });
 };
 
@@ -87,14 +77,21 @@ const setupFortify = async () => {
             match: /Fortify::createUsersUsing\(CreateNewUser::class\);/,
             position: 'before',
             lines: [
-                "Fortify::loginView(fn () => hybridly('auth.login'));",
-                "Fortify::registerView(fn () => hybridly('auth.register'));",
-                "Fortify::verifyEmailView(fn () => hybridly('auth.verify-email'));",
-                "Fortify::confirmPasswordView(fn () => hybridly('auth.confirm-password'));",
-                "Fortify::twoFactorChallengeView(fn () => hybridly('auth.two-factor-challenge'));",
-                "Fortify::requestPasswordResetLinkView(fn () => hybridly('auth.forgot-password'));",
+                "Fortify::loginView(fn () => hybridly('Auth.Login', [",
+                "    'canResetPassword' => app('router')->has('password.request'),",
+                "    'status' => session('status'),",
+                ']));',
+                "Fortify::registerView(fn () => hybridly('Auth.Register'));",
+                "Fortify::verifyEmailView(fn () => hybridly('Auth.VerifyEmail', [",
+                "    'status' => session('status'),",
+                ']));',
+                "Fortify::confirmPasswordView(fn () => hybridly('Auth.ConfirmPassword'));",
+                "Fortify::twoFactorChallengeView(fn () => hybridly('Auth.TwoFactorChallenge'));",
+                "Fortify::requestPasswordResetLinkView(fn () => hybridly('Auth.ForgotPassword', [",
+                "    'status' => session('status'),",
+                ']));',
                 "Fortify::resetPasswordView(fn () => hybridly('reset-password', [",
-                "    'email' => request()->query('email'),",
+                "    'email' => request()->input('email'),",
                 "    'token' => request()->route('token')",
                 ']));',
             ],
@@ -148,5 +145,31 @@ const setupFortify = async () => {
                 ],
             },
         ],
+    });
+
+    await editFiles({
+        title: 'update default home route in fortify',
+        files: 'config/fortify.php',
+        operations: {
+            type: 'update-content',
+            update: (content) =>
+                content.replace(
+                    "'home' => '/home',",
+                    "'home' => '/dashboard',"
+                ),
+        },
+    });
+
+    await editFiles({
+        title: 'update default home route in route service provider',
+        files: 'app/Providers/RouteServiceProvider.php',
+        operations: {
+            type: 'update-content',
+            update: (content) =>
+                content.replace(
+                    "public const HOME = '/home';",
+                    "public const HOME = '/dashboard';"
+                ),
+        },
     });
 };

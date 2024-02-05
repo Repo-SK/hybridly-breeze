@@ -1,8 +1,12 @@
 <?php
 
-use App\Http\Controllers\AccountProfileController;
-use App\Http\Controllers\AccountSecurityController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\OtherBrowserSessionsController;
+use App\Http\Controllers\CurrentUserController;
+use App\Http\Controllers\TermsOfServiceController;
+use App\Http\Controllers\PrivacyPolicyController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +19,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', function () {
-        return hybridly('dashboard');
-    })->name('dashboard.index');
+Route::get('/', function () {
+    return hybridly('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+})->name('welcome');
 
-    Route::get('/account/profile', AccountProfileController::class)->name('account.profile');
-    Route::get('/account/security', AccountSecurityController::class)
-        ->middleware('password.confirm')
-        ->name('account.security');
+Route::get('/terms-of-service', [TermsOfServiceController::class, 'show'])->name('terms.show');
+Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('policy.show');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return hybridly('Dashboard');
+    })->name('dashboard');
+
+    // User & Profile...
+    Route::get('/user/profile', [UserProfileController::class, 'show'])
+        ->name('profile.show');
+
+    Route::delete('/user/other-browser-sessions', [OtherBrowserSessionsController::class, 'destroy'])
+        ->name('other-browser-sessions.destroy');
+
+    Route::delete('/user', [CurrentUserController::class, 'destroy'])
+        ->name('current-user.destroy');
+
+    Route::middleware(['verifed'])->group(function () {
+        // make something awesome!
+    });
 });
