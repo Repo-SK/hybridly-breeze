@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 import DeleteUserForm from '@/views/Profile/Partials/DeleteUserForm.vue';
 import LogoutOtherBrowserSessionsForm from '@/views/Profile/Partials/LogoutOtherBrowserSessionsForm.vue';
 import SectionBorder from '@/components/SectionBorder.vue';
